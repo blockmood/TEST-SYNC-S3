@@ -33,3 +33,5 @@ jobs:
         AWS_REGION: ${{ secrets.AWS_REGION }}   # optional: defaults to us-east-1
         SOURCE_DIR: './build'      # optional: defaults to entire repository
         DEST_DIR: 'test_build'
+    - name: '输出列表'
+      run: ls -al
