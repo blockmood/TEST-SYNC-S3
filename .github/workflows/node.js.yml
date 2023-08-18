@@ -1,4 +1,4 @@
-name: Upload Website
+name: Upload S3
 
 on:
   push:
@@ -9,7 +9,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build
+
     - uses: jakejarvis/s3-sync-action@master
       with:
         args: --acl public-read --follow-symlinks --delete
@@ -19,4 +27,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}   # optional: defaults to us-east-1
         SOURCE_DIR: 'public'      # optional: defaults to entire repository
-        DEST_DIR: 'test_build2'
+        DEST_DIR: 'github_sync_test'
